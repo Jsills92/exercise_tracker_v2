@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db');
 
 // POST /api/users/:_id/exercises - Add an exercise to a user
-router.post('/:id/exercises', async (req, res) => {
+router.post('/:_id/exercises', async (req, res) => {
   const userId = req.params.id;
   const { description, duration, date } = req.body;
 
@@ -42,7 +42,7 @@ router.post('/:id/exercises', async (req, res) => {
 });
 
 // GET /api/users/:id/logs - Get user's exercise log
-router.get('/:id/logs', async (req, res) => {
+router.get('/:_id/logs', async (req, res) => {
   const userId = req.params.id;
   const { from, to, limit } = req.query;
 
