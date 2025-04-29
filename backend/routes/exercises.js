@@ -4,7 +4,7 @@ const db = require('../db');
 
 // POST /api/users/:_id/exercises - Add an exercise to a user
 router.post('/:_id/exercises', async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params._id;
   const { description, duration, date } = req.body;
 
   if (!description || !duration) {
@@ -14,32 +14,36 @@ router.post('/:_id/exercises', async (req, res) => {
   const exerciseDate = date ? new Date(date) : new Date();
 
   try {
-    // Check if user exists
-    const userCheck = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
-    if (userCheck.rows.length === 0) {
+    // Get the username first
+    const userResult = await db.query('SELECT username FROM users WHERE id = $1', [userId]);
+    if (userResult.rows.length === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Insert exercise
-    const result = await db.query(
-      `INSERT INTO exercises (user_id, description, duration, date)
-       VALUES ($1, $2, $3, $4)
-       RETURNING description, duration, date`,
+    const username = userResult.rows[0].username;
+
+    // Insert the exercise
+    const insertResult = await db.query(
+      'INSERT INTO exercises (user_id, description, duration, date) VALUES ($1, $2, $3, $4) RETURNING description, duration, date',
       [userId, description, duration, exerciseDate]
     );
 
+    const { description: desc, duration: dur, date: insertedDate } = insertResult.rows[0];
+
     res.json({
       _id: userId,
-      username: userCheck.rows[0].username,
-      description: result.rows[0].description,
-      duration: result.rows[0].duration,
-      date: new Date(result.rows[0].date).toDateString()
+      username,
+      date: new Date(insertedDate).toDateString(),
+      duration: parseInt(dur),
+      description: desc
     });
+
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error while creating exercise' });
+    res.status(500).json({ error: 'Database error while adding exercise' });
   }
 });
+
 
 // GET /api/users/:id/logs - Get user's exercise log
 router.get('/:_id/logs', async (req, res) => {
