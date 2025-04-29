@@ -47,7 +47,7 @@ router.post('/:_id/exercises', async (req, res) => {
 
 // GET /api/users/:id/logs - Get user's exercise log
 router.get('/:_id/logs', async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params._id;
   const { from, to, limit } = req.query;
 
   try {
