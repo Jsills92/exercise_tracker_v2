@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
     
     // Ensure the result contains the correct properties
     const users = result.rows.map(row => ({
-      _id: row._id,
+      _id: row._id.toString(),
       username: row.username
     }));
 
