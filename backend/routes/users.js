@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 // GET /api/users — get all users
 router.get('/', async (req, res) => {
   try {
-    const result = await db.query('SELECT id AS _id::TEXT, username FROM users');
+    const result = await db.query('SELECT id AS _id, username FROM users');
     
     // Log the result to see the raw data being returned
     console.log('Raw data from DB:', result.rows);
