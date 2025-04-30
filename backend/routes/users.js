@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
       'INSERT INTO users (username) VALUES ($1) RETURNING id, username',
       [username]
     );
-    res.json({ _id: result.rows[0].id, username: result.rows[0].username });
+    res.json({ _id: result.rows[0].id.toString(), username: result.rows[0].username });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error while creating user' });
