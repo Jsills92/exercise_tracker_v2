@@ -34,7 +34,7 @@ router.post('/:_id/exercises', async (req, res) => {
       _id: userId.toString(),
       username,
       date: new Date(insertedDate).toDateString(),
-      duration: parseInt(dur),
+      duration: parseInt(dur).toString(),
       description: desc
     });
 
@@ -81,7 +81,7 @@ router.get('/:_id/logs', async (req, res) => {
 
     const log = result.rows.map(row => ({
       description: row.description,
-      duration: parseInt(row.duration),
+      duration: parseInt(row.duration).toString(),
       date: new Date(row.date).toDateString()
     }));
 
