@@ -20,15 +20,22 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/users — get all users
+// GET /api/users — get all users
 router.get('/', async (req, res) => {
   try {
     const result = await db.query('SELECT id AS _id, username FROM users');
     
+    // Log the result to see the raw data being returned
+    console.log('Raw data from DB:', result.rows);
+
     // Ensure the result contains the correct properties
     const users = result.rows.map(row => ({
-      _id: row._id.toString(),
+      _id: row._id.toString(),  // Explicitly convert _id to a string
       username: row.username
     }));
+
+    // Log the final mapped users data
+    console.log('Mapped users data:', users);
 
     res.json(users);
   } catch (err) {
