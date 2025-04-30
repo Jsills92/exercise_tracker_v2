@@ -23,7 +23,14 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const result = await db.query('SELECT id AS _id, username FROM users');
-    res.json(result.rows);
+    
+    // Ensure the result contains the correct properties
+    const users = result.rows.map(row => ({
+      _id: row._id,
+      username: row.username
+    }));
+
+    res.json(users);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error while retrieving users' });
