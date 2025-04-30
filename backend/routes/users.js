@@ -12,9 +12,7 @@ router.post('/', async (req, res) => {
       'INSERT INTO users (username) VALUES ($1) RETURNING id, username',
       [username]
     );
-    console.log(typeof result.rows[0].id, result.rows[0].id); // should be "number"
-    console.log(typeof result.rows[0].id.toString(), result.rows[0].id.toString()); // should be "string"
-    res.json({ _id: result.rows[0].id.toString(), username: result.rows[0].username });
+    res.json({ _id: result.rows[0].id, username: result.rows[0].username });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error while creating user' });
@@ -32,7 +30,7 @@ router.get('/', async (req, res) => {
 
     // Ensure the result contains the correct properties
     const users = result.rows.map(row => ({
-      _id: row.id,  
+      _id: row._id,  
       username: row.username
     }));
 
