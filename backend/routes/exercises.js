@@ -58,29 +58,30 @@ router.get('/:_id/logs', async (req, res) => {
 
     let query = 'SELECT description, duration, date FROM exercises WHERE user_id = $1';
     const values = [userId];
-
+    
     if (from) {
-      query += ' AND date >= $' + (values.length + 1);
       values.push(from);
+      query += ` AND date >= $${values.length}`;
     }
-
+    
     if (to) {
-      query += ' AND date <= $' + (values.length + 1);
       values.push(to);
+      query += ` AND date <= $${values.length}`;
     }
-
+    
     query += ' ORDER BY date DESC';
-
+    
     if (limit) {
-      query += ' LIMIT $' + (values.length + 1);
       values.push(limit);
+      query += ` LIMIT $${values.length}`;
     }
+    
 
     const result = await db.query(query, values);
 
     const log = result.rows.map(row => ({
       description: row.description,
-      duration: row.duration,
+      duration: parseInt(row.duration),
       date: new Date(row.date).toDateString()
     }));
 
