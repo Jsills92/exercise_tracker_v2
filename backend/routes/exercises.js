@@ -31,7 +31,7 @@ router.post('/:_id/exercises', async (req, res) => {
     const { description: desc, duration: dur, date: insertedDate } = insertResult.rows[0];
 
     res.json({
-      _id: userId,
+      _id: userId.toString(),
       username,
       date: new Date(insertedDate).toDateString(),
       duration: parseInt(dur),
