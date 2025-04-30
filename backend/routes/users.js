@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 
     // Ensure the result contains the correct properties
     const users = result.rows.map(row => ({
-      _id: row.id.toString(),  // Explicitly convert _id to a string
+      _id: row.id,  
       username: row.username
     }));
 
