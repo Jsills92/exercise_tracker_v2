@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import CreateUser from './components/CreateUser';
+import CreateExercise from './components/CreateExercise';
+import ExerciseLog from './components/ExerciseLog';
+import Home from './components/Home'; // Create a Home component
+import './App.css'; // Ensure this import is in your main entry file
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <h1>Exercise Tracker</h1>
+        <nav>
+          <ul>
+            <li><Link to="/create-user">Create User</Link></li>
+            <li><Link to="/create-exercise">Create Exercise</Link></li>
+            <li><Link to="/logs">Exercise Logs</Link></li>
+            {/* Add more links here for other pages */}
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home />} />  {/* Add a Home route */}
+          <Route path="/create-user" element={<CreateUser />} />
+          <Route path="/create-exercise" element={<CreateExercise />} />
+          <Route path="/logs" element={<ExerciseLog />} />
+          {/* Add more routes here */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
